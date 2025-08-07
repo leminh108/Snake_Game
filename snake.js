@@ -1,4 +1,5 @@
 // key to control the snake
+// Up, Down, Left, Right
 function keyDown(event) {
     // Up
     if(event.keyCode == 38) {
