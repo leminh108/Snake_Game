@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Snake Game</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game </title>
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Fontawesome  -->
+    <!-- font awesome cdn link  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
+
 <body>
-    <h1>Chào mừng đến với trò chơi Snake!</h1>
-    <p>Đây là giao diện đơn giản cho trò chơi Snake.</p>
+
+    <h1>Game Con Rắn (Snake Game)</h1>
+    <h2>Owner: Minh</h2>
+    <p>Chào mừng bạn đến với trò chơi Con Rắn! Đây là một dự án nhỏ do Minh phát triển.</p>
+    <!-- Draw -->
+    <canvas id="game" width="400" height="400"></canvas>
+
+    <div class="tutorial">
+        <h2>Hướng dẫn chơi (づ￣ 3￣)づ</h2>
+        <p>Di chuyển: ← → ↑ ↓</p>
+        <p>Enter: Chơi lại.</p>
+    </div>
+
+    <div class="contact">
+        <a href="" target="_blank">
+            Contact: <i class="fab fa-facebook"></i>
+        </a>
+    </div>
+
+    <script src="./snake.js"></script>
+
 </body>
+
 </html>
