@@ -20,6 +20,13 @@ function isGameOver() {
         }
     }
 
+    // Show game over screen
+    if (gameOver) {
+        ctx.fillStyle = "lightblue";
+        ctx.font = "50px Arial";
+        ctx.fillText("Game over!", canvas.width / 6, canvas.height / 2);
+    }
+
     return gameOver;
 }
 
