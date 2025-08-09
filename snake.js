@@ -25,6 +25,10 @@ function keyDown(event) {
         xVelocity = 1;
         yVelocity = 0;
     }
+    // Enter to restart
+    if(event.keyCode == 13) {
+        location.reload();
+    }
 }
 
 function drawApple() {
