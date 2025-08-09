@@ -26,3 +26,24 @@ function keyDown(event) {
         yVelocity = 0;
     }
 }
+
+function drawApple() {
+    ctx.fillStyle = 'red';
+    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+}
+
+// Update drawGame
+function drawGame() {
+    changeSnakePosition();
+    
+    let result = isGameOver();
+    if(result) {
+        return;
+    }
+    
+    clearScreen();
+    drawApple();
+    drawSnake();
+    
+    setTimeout(drawGame, 100);
+}
