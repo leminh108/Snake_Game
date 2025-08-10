@@ -1,0 +1,18 @@
+* {
+    font-family: "Bakbak One", cursive;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(50deg, rgb(41, 41, 41), rgb(168, 168, 168));
+    height: 100vh;
+}
+
+canvas {
+    box-shadow: black 20px 20px 40px;
+}
