@@ -83,3 +83,24 @@ function drawGame() {
 
     setTimeout(drawGame, 100);
 }
+
+function drawSnake() {
+    // Draw body parts
+    ctx.fillStyle = 'blue';
+    for(let i = 0; i < snakeParts.length; i++) {
+        let part = snakeParts[i];
+        ctx.fillRect(part.x * tileCount, part.y * tileCount, tileSize, tileSize);
+    }
+    
+    // Add new head position
+    snakeParts.push(new SnakePart(headX, headY));
+    
+    // Remove tail if too long
+    if(snakeParts.length > tailLength) {
+        snakeParts.shift();
+    }
+    
+    // Draw head
+    ctx.fillStyle = 'tomato';
+    ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
+}
