@@ -83,3 +83,11 @@ function drawGame() {
 
     setTimeout(drawGame, 100);
 }
+
+@media (max-width: 500px) {
+    .contact {
+        bottom: 54px;
+        left: 160px;
+        font-size: 40px;
+    }
+}
