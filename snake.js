@@ -97,3 +97,31 @@ function drawGame() {
     setTimeout(drawGame, 100);
 }
 
+const sound = new Audio("gameover.mp4");
+const soundScore = new Audio("ez.mp3");
+
+// Update isGameOver for game over sound
+function isGameOver() {
+    // ... existing code ...
+    
+    if(gameOver) {
+        ctx.fillStyle = "lightblue";
+        ctx.font = "50px Arial";
+        ctx.fillText("Game over!", canvas.width/6, canvas.height/2);
+        sound.play(); // Play game over sound
+    }
+    
+    return gameOver;
+}
+
+// Update checkAppleCollision for score sound
+function checkAppleCollision() {
+    if(appleX === headX && appleY === headY) {
+        appleX = Math.floor(Math.random() * tileCount);
+        appleY = Math.floor(Math.random() * tileCount);
+        tailLength++;
+        score++;
+        soundScore.play(); // Play score sound
+    }
+}
+
