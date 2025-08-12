@@ -73,3 +73,27 @@ function drawGame() {
     setTimeout(drawGame, 100);
 }
 
+function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "16px Arial";
+    ctx.fillText("Score: " + score, canvas.width - 80, 20);
+}
+
+// Update drawGame
+function drawGame() {
+    changeSnakePosition();
+    
+    let result = isGameOver();
+    if(result) {
+        return;
+    }
+    
+    clearScreen();
+    checkAppleCollision();
+    drawApple();
+    drawSnake();
+    drawScore();
+    
+    setTimeout(drawGame, 100);
+}
+
