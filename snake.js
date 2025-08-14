@@ -22,10 +22,26 @@ function fitCanvas() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.imageSmoothingEnabled = false;
 }
+
 // gọi khi load và khi thay đổi kích thước
 fitCanvas();
 window.addEventListener("resize", fitCanvas);
 canvas.tabIndex = 0;
+
+// ngăn trang cuộn khi nhấn phím mũi tên
+window.addEventListener(
+    "keydown",
+    (e) => {
+        if (e.key.startsWith("Arrow")) {
+            if (document.activeElement !== canvas) e.preventDefault();
+        }
+    },
+    { passive: false }
+);
+
+canvas.addEventListener("blur", () => {
+    canvas.focus({ preventScroll: true });
+});
 
 function isGameOver() {
     let gameOver = false;
