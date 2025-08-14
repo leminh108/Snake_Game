@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,17 +7,40 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <h1>Game Con Rắn (Snake Game)</h1>
-        <h2>Owner: Nhóm 2</h2>
-        <p>Chào mừng bạn đến với trò chơi Con Rắn!</p>
+        <div class="shell">
+            <header class="topbar">
+                <h1>Game Con Rắn (Snake Game)</h1>
+                <button
+                    id="themeToggle"
+                    class="toggle"
+                    aria-label="Đổi giao diện"
+                >
+                    🌙
+                </button>
+            </header>
 
-        <canvas id="game" width="400" height="400"></canvas>
+            <main class="stage">
+                <canvas id="game" tabindex="0"></canvas>
 
-        <div class="tutorial">
-            <h2>Hướng dẫn chơi (づ￣ 3￣)づ</h2>
-            <p>Di chuyển: ← → ↑ ↓</p>
-            <p>Enter: Chơi lại.</p>
+                <div class="hud">
+                    <div class="score">Điểm: <span id="score">0</span></div>
+                    <button id="restart" class="btn">Chơi lại ↺</button>
+                </div>
+
+                <div class="tutorial">
+                    <h2>Hướng dẫn chơi (づ￣ 3￣)づ</h2>
+                    <p>Di chuyển: ← → ↑ ↓</p>
+                    <p>Enter / nút “Chơi lại” để chơi lại.</p>
+                </div>
+            </main>
         </div>
+
+        <audio id="sfxEat" src="./assets/sounds/Win.wav" preload="auto"></audio>
+        <audio
+            id="sfxDie"
+            src="./assets/sounds/Lose.wav"
+            preload="auto"
+        ></audio>
 
         <script src="./snake.js"></script>
     </body>
