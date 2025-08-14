@@ -83,3 +83,17 @@ function drawGame() {
 
     setTimeout(drawGame, 100);
 }
+
+const btn = document.getElementById("themeToggle");
+if (localStorage.getItem("theme") === "light") {
+    document.documentElement.classList.add("light");
+}
+btn.textContent = document.documentElement.classList.contains("light")
+    ? "☀️"
+    : "🌙";
+btn.addEventListener("click", () => {
+    document.documentElement.classList.toggle("light");
+    const light = document.documentElement.classList.contains("light");
+    btn.textContent = light ? "☀️" : "🌙";
+    localStorage.setItem("theme", light ? "light" : "dark");
+});
