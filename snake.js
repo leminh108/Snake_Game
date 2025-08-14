@@ -16,115 +16,118 @@ function fitCanvas() {
     const dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
     canvas.style.width = side + "px";
     canvas.style.height = side + "px";
-    canvas.width = Math.floor(side * dpr);
-    canvas.height = Math.floor(side * dpr);
-
+    canvas.width = side * dpr;
+    canvas.height = side * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.imageSmoothingEnabled = false;
 }
-
-// gọi khi load và khi thay đổi kích thước
 fitCanvas();
-window.addEventListener("resize", fitCanvas);
-canvas.tabIndex = 0;
+addEventListener("resize", fitCanvas);
 
 // ngăn trang cuộn khi nhấn phím mũi tên
+const blockedKeys = new Set([
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "PageUp",
+    "PageDown",
+    "Home",
+    "End",
+    " ",
+]);
 window.addEventListener(
     "keydown",
     (e) => {
-        if (e.key.startsWith("Arrow")) {
-            if (document.activeElement !== canvas) e.preventDefault();
-        }
+        if (blockedKeys.has(e.key)) e.preventDefault();
     },
     { passive: false }
 );
+// Focus canvas để nhận phím ổn định
+canvas.addEventListener("click", () => canvas.focus());
+window.addEventListener("load", () => canvas.focus());
 
-canvas.addEventListener("blur", () => {
-    canvas.focus({ preventScroll: true });
-});
+// function isGameOver() {
+//     let gameOver = false;
 
-function isGameOver() {
-    let gameOver = false;
+//     // Check if game started
+//     if (yVelocity === 0 && xVelocity === 0) {
+//         return false;
+//     }
 
-    // Check if game started
-    if (yVelocity === 0 && xVelocity === 0) {
-        return false;
-    }
+//     // Check walls
+//     if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
+//         gameOver = true;
+//     }
 
-    // Check walls
-    if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
-        gameOver = true;
-    }
+//     // Check self collision
+//     for (let i = 0; i < snakeParts.length; i++) {
+//         let part = snakeParts[i];
+//         if (part.x === headX && part.y === headY) {
+//             gameOver = true;
+//             break;
+//         }
+//     }
 
-    // Check self collision
-    for (let i = 0; i < snakeParts.length; i++) {
-        let part = snakeParts[i];
-        if (part.x === headX && part.y === headY) {
-            gameOver = true;
-            break;
-        }
-    }
+//     // Show game over screen
+//     if (gameOver) {
+//         ctx.fillStyle = "lightblue";
+//         ctx.font = "50px Arial";
+//         ctx.fillText("Game over!", canvas.width / 6, canvas.height / 2);
+//     }
 
-    // Show game over screen
-    if (gameOver) {
-        ctx.fillStyle = "lightblue";
-        ctx.font = "50px Arial";
-        ctx.fillText("Game over!", canvas.width / 6, canvas.height / 2);
-    }
+//     return gameOver;
+// }
 
-    return gameOver;
-}
+// // key to control the snake
+// // Up, Down, Left, Right
+// function keyDown(event) {
+//     // Up
+//     if (event.keyCode == 38) {
+//         if (yVelocity == 1) return; // Prevent reverse
+//         yVelocity = -1;
+//         xVelocity = 0;
+//     }
+//     // Down
+//     if (event.keyCode == 40) {
+//         if (yVelocity == -1) return; // Prevent reverse
+//         yVelocity = 1;
+//         xVelocity = 0;
+//     }
+//     // Left
+//     if (event.keyCode == 37) {
+//         if (xVelocity == 1) return; // Prevent reverse
+//         xVelocity = -1;
+//         yVelocity = 0;
+//     }
+//     // Right
+//     if (event.keyCode == 39) {
+//         if (xVelocity == -1) return; // Prevent reverse
+//         xVelocity = 1;
+//         yVelocity = 0;
+//     }
+//     // Enter to restart
+//     if (event.keyCode == 13) {
+//         location.reload();
+//     }
+// }
 
-// key to control the snake
-// Up, Down, Left, Right
-function keyDown(event) {
-    // Up
-    if (event.keyCode == 38) {
-        if (yVelocity == 1) return; // Prevent reverse
-        yVelocity = -1;
-        xVelocity = 0;
-    }
-    // Down
-    if (event.keyCode == 40) {
-        if (yVelocity == -1) return; // Prevent reverse
-        yVelocity = 1;
-        xVelocity = 0;
-    }
-    // Left
-    if (event.keyCode == 37) {
-        if (xVelocity == 1) return; // Prevent reverse
-        xVelocity = -1;
-        yVelocity = 0;
-    }
-    // Right
-    if (event.keyCode == 39) {
-        if (xVelocity == -1) return; // Prevent reverse
-        xVelocity = 1;
-        yVelocity = 0;
-    }
-    // Enter to restart
-    if (event.keyCode == 13) {
-        location.reload();
-    }
-}
+// function drawApple() {
+//     ctx.fillStyle = "red";
+//     ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+// }
 
-function drawApple() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
-}
+// // Update drawGame
+// function drawGame() {
+//     changeSnakePosition();
 
-// Update drawGame
-function drawGame() {
-    changeSnakePosition();
+//     let result = isGameOver();
+//     if (result) {
+//         return;
+//     }
 
-    let result = isGameOver();
-    if (result) {
-        return;
-    }
+//     clearScreen();
+//     drawApple();
+//     drawSnake();
 
-    clearScreen();
-    drawApple();
-    drawSnake();
-
-    setTimeout(drawGame, 100);
-}
+//     setTimeout(drawGame, 100);
+// }
