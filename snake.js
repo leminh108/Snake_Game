@@ -75,6 +75,56 @@ function isGameOver() {
     return gameOver;
 }
 
+//Constants và trạng thái
+const tileCount = 21;
+const tileSize = () => Math.floor(canvas.clientWidth / tileCount);
+
+let headX = 10;
+let headY = 10;
+let xVelocity = 0;
+let yVelocity = 0;
+let appleX = 5;
+let appleY = 5;
+let snakeParts = [];
+let tailLength = 2;
+let speed = 9;
+let score = 0;
+
+class SnakePart {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+const sfxEat = document.getElementById("sfxEat");
+const sfxDie = document.getElementById("sfxDie");
+
+//thêm chức năng light mode
+function isLight() {
+    return document.documentElement.classList.contains("light");
+}
+
+function theme(key) {
+    const dark = {
+        board: "#111316",
+        checker: "rgba(255,255,255,.02)",
+        snake: "#3bd26c",
+        snakeShadow: "rgba(0,0,0,.4)",
+        text: "#f9fafb",
+    };
+
+    const light = {
+        board: "#f1f3f6",
+        checker: "rgba(0,0,0,.04)",
+        snake: "#16a34a",
+        snakeShadow: "rgba(0,0,0,.18)",
+        text: "#111",
+    };
+
+    return (isLight() ? light : dark)[key];
+}
+
 // key to control the snake
 // Up, Down, Left, Right
 function keyDown(event) {
