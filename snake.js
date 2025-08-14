@@ -213,6 +213,51 @@ function gameOver() {
     } catch {}
 }
 
+// tạo vòng lặp về ăn táo, thêm đốt cho rắn, tăng tốc
+let lastTime = 0;
+function loop(time) {
+    const secondsSinceLast = (time - lastTime) / 1000;
+
+    if (secondsSinceLast < 1 / speed) {
+        requestAnimationFrame(loop);
+        return;
+    }
+    lastTime = time;
+
+    // cập nhật vị trí đầu rắn khi reset
+    headX += xVelocity;
+    headY += yVelocity;
+
+    if (isGameOver()) {
+        gameOver();
+        return;
+    }
+
+    // thêm đốt cho rắn
+    snakeParts.push(new SnakePart(headX, headY));
+    while (snakeParts.length > tailLength) snakeParts.shift();
+
+    // ăn táo
+    if (appleX === headX && appleY === headY) {
+        tailLength++;
+        score++;
+
+        if (speed < 18 && score % 4 === 0) speed += 1;
+        try {
+            sfxEat.currentTime = 0;
+            sfxEat.play();
+        } catch {}
+        randomApple();
+    }
+
+    drawBoard();
+    drawApple();
+    drawSnake();
+    drawScore();
+
+    requestAnimationFrame(loop);
+}
+
 // // key to control the snake
 // // Up, Down, Left, Right
 // function keyDown(event) {
