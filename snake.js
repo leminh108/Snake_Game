@@ -1,85 +1,133 @@
-function isGameOver() {
-    let gameOver = false;
+// Canvas responsive
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d", { alpha: false });
 
-    // Check if game started
-    if (yVelocity === 0 && xVelocity === 0) {
-        return false;
-    }
-
-    // Check walls
-    if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
-        gameOver = true;
-    }
-
-    // Check self collision
-    for (let i = 0; i < snakeParts.length; i++) {
-        let part = snakeParts[i];
-        if (part.x === headX && part.y === headY) {
-            gameOver = true;
-            break;
-        }
-    }
-
-    // Show game over screen
-    if (gameOver) {
-        ctx.fillStyle = "lightblue";
-        ctx.font = "50px Arial";
-        ctx.fillText("Game over!", canvas.width / 6, canvas.height / 2);
-    }
-
-    return gameOver;
+function fitCanvas() {
+    const side = Math.max(
+        320,
+        Math.min(
+            720,
+            Math.min(
+                Math.floor(canvas.getBoundingClientRect().width),
+                Math.floor(window.innerHeight * 0.7)
+            )
+        )
+    );
+    const dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+    canvas.style.width = side + "px";
+    canvas.style.height = side + "px";
+    canvas.width = side * dpr;
+    canvas.height = side * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
+fitCanvas();
+addEventListener("resize", fitCanvas);
 
-// key to control the snake
-// Up, Down, Left, Right
-function keyDown(event) {
-    // Up
-    if (event.keyCode == 38) {
-        if (yVelocity == 1) return; // Prevent reverse
-        yVelocity = -1;
-        xVelocity = 0;
-    }
-    // Down
-    if (event.keyCode == 40) {
-        if (yVelocity == -1) return; // Prevent reverse
-        yVelocity = 1;
-        xVelocity = 0;
-    }
-    // Left
-    if (event.keyCode == 37) {
-        if (xVelocity == 1) return; // Prevent reverse
-        xVelocity = -1;
-        yVelocity = 0;
-    }
-    // Right
-    if (event.keyCode == 39) {
-        if (xVelocity == -1) return; // Prevent reverse
-        xVelocity = 1;
-        yVelocity = 0;
-    }
-    // Enter to restart
-    if (event.keyCode == 13) {
-        location.reload();
-    }
-}
+// ngăn trang cuộn khi nhấn phím mũi tên
+const blockedKeys = new Set([
+    "ArrowUp",
+    "ArrowDown",
+    "ArrowLeft",
+    "ArrowRight",
+    "PageUp",
+    "PageDown",
+    "Home",
+    "End",
+    " ",
+]);
+window.addEventListener(
+    "keydown",
+    (e) => {
+        if (blockedKeys.has(e.key)) e.preventDefault();
+    },
+    { passive: false }
+);
+// Focus canvas để nhận phím ổn định
+canvas.addEventListener("click", () => canvas.focus());
+window.addEventListener("load", () => canvas.focus());
 
-function drawApple() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
-}
+// function isGameOver() {
+//     let gameOver = false;
 
-// Update drawGame
-function drawGame() {
-    changeSnakePosition();
+//     // Check if game started
+//     if (yVelocity === 0 && xVelocity === 0) {
+//         return false;
+//     }
 
-    let result = isGameOver();
-    if (result) {
-        return;
-    }
+//     // Check walls
+//     if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount) {
+//         gameOver = true;
+//     }
 
-    clearScreen();
-    drawApple();
-    drawSnake();
+//     // Check self collision
+//     for (let i = 0; i < snakeParts.length; i++) {
+//         let part = snakeParts[i];
+//         if (part.x === headX && part.y === headY) {
+//             gameOver = true;
+//             break;
+//         }
+//     }
 
-    setTimeout(drawGame, 100);
-}
+//     // Show game over screen
+//     if (gameOver) {
+//         ctx.fillStyle = "lightblue";
+//         ctx.font = "50px Arial";
+//         ctx.fillText("Game over!", canvas.width / 6, canvas.height / 2);
+//     }
+
+//     return gameOver;
+// }
+
+// // key to control the snake
+// // Up, Down, Left, Right
+// function keyDown(event) {
+//     // Up
+//     if (event.keyCode == 38) {
+//         if (yVelocity == 1) return; // Prevent reverse
+//         yVelocity = -1;
+//         xVelocity = 0;
+//     }
+//     // Down
+//     if (event.keyCode == 40) {
+//         if (yVelocity == -1) return; // Prevent reverse
+//         yVelocity = 1;
+//         xVelocity = 0;
+//     }
+//     // Left
+//     if (event.keyCode == 37) {
+//         if (xVelocity == 1) return; // Prevent reverse
+//         xVelocity = -1;
+//         yVelocity = 0;
+//     }
+//     // Right
+//     if (event.keyCode == 39) {
+//         if (xVelocity == -1) return; // Prevent reverse
+//         xVelocity = 1;
+//         yVelocity = 0;
+//     }
+//     // Enter to restart
+//     if (event.keyCode == 13) {
+//         location.reload();
+//     }
+// }
+
+// function drawApple() {
+//     ctx.fillStyle = "red";
+//     ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
+// }
+
+// // Update drawGame
+// function drawGame() {
+//     changeSnakePosition();
+
+//     let result = isGameOver();
+//     if (result) {
+//         return;
+//     }
+
+//     clearScreen();
+//     drawApple();
+//     drawSnake();
+
+//     setTimeout(drawGame, 100);
+// }
