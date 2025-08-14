@@ -197,6 +197,22 @@ function isGameOver() {
     return false;
 }
 
+// màn hình game khi thua
+function gameOver() {
+    const size = tileSize();
+    ctx.fillStyle = "rgba(0,0,0,.45)";
+    ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    ctx.fillStyle = theme("text");
+    ctx.font = `bold ${Math.floor(size * 1.1)}px Arial`;
+    ctx.textAlign = "center";
+    ctx.fillText("Game Over!", canvas.clientWidth / 2, canvas.clientHeight / 2);
+
+    try {
+        sfxDie.currentTime = 0;
+        sfxDie.onplay();
+    } catch {}
+}
+
 // // key to control the snake
 // // Up, Down, Left, Right
 // function keyDown(event) {
