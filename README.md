@@ -2,7 +2,7 @@
 
 ## 📖 Giới thiệu
 
-Snake Game là một dự án trò chơi web cổ điển được phát triển bởi Minh. Đây là phiên bản hiện đại của trò chơi con rắn kinh điển từng gắn liền với Nokia và tuổi thơ của nhiều người. Trò chơi được xây dựng hoàn toàn bằng HTML, CSS và JavaScript thuần, không sử dụng bất kỳ thư viện ngoài nào.
+Snake Game là một dự án trò chơi web cổ điển được phát triển bởi Team 2. Đây là phiên bản hiện đại của trò chơi con rắn kinh điển từng gắn liền với Nokia và tuổi thơ của nhiều người. Trò chơi được xây dựng hoàn toàn bằng HTML, CSS và JavaScript thuần, không sử dụng bất kỳ thư viện ngoài nào.
 
 ## 🎮 Tính năng
 
