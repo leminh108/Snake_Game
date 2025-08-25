@@ -82,6 +82,7 @@ let appleX = 5,
     appleY = 5;
 let score = 0;
 let speed = 9;
+let isPaused = false;
 
 const sfxEat = document.getElementById("sfxEat");
 const sfxLose = document.getElementById("sfxLose");
@@ -167,6 +168,18 @@ function drawScore() {
     document.getElementById("score").textContent = score;
 }
 
+function drawPausedOverlay() {
+    const size = tileSize();
+    ctx.fillStyle = "rgba(0,0,0,.6)";
+    ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    ctx.fillStyle = theme("text");
+    ctx.font = `bold ${Math.floor(size * 1.2)}px Arial`;
+    ctx.textAlign = "center";
+    ctx.fillText("PAUSED", canvas.clientWidth / 2, canvas.clientHeight / 2 - size);
+    ctx.font = `${Math.floor(size * 0.6)}px Arial`;
+    ctx.fillText("Press SPACE to resume", canvas.clientWidth / 2, canvas.clientHeight / 2 + size);
+}
+
 function isGameOver() {
     if (xVelocity === 0 && yVelocity === 0) return false;
     if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount)
@@ -194,9 +207,17 @@ function gameOver() {
 // ===== Loop =====
 let lastTime = 0;
 function loop(t) {
+    // Always continue the animation loop
+    requestAnimationFrame(loop);
+    
+    // If paused, just draw the paused overlay and return
+    if (isPaused) {
+        drawPausedOverlay();
+        return;
+    }
+    
     const dt = (t - lastTime) / 1000;
     if (dt < 1 / speed) {
-        requestAnimationFrame(loop);
         return;
     }
     lastTime = t;
@@ -230,38 +251,46 @@ function loop(t) {
     drawBoard();
     drawApple();
     drawSnake();
-
-    requestAnimationFrame(loop);
 }
 
 // ===== Controls =====
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
         case "ArrowUp":
-            if (yVelocity === 1) break;
+            if (yVelocity === 1 || isPaused) break;
             yVelocity = -1;
             xVelocity = 0;
             break;
         case "ArrowDown":
-            if (yVelocity === -1) break;
+            if (yVelocity === -1 || isPaused) break;
             yVelocity = 1;
             xVelocity = 0;
             break;
         case "ArrowLeft":
-            if (xVelocity === 1) break;
+            if (xVelocity === 1 || isPaused) break;
             xVelocity = -1;
             yVelocity = 0;
             break;
         case "ArrowRight":
-            if (xVelocity === -1) break;
+            if (xVelocity === -1 || isPaused) break;
             xVelocity = 1;
             yVelocity = 0;
             break;
         case "Enter":
             reset();
             break;
+        case " ":
+            togglePause();
+            break;
     }
 });
+
+function togglePause() {
+    // Only allow pause if game is actually running (not at start screen)
+    if (xVelocity !== 0 || yVelocity !== 0) {
+        isPaused = !isPaused;
+    }
+}
 
 document.getElementById("restart").addEventListener("click", reset);
 
@@ -274,6 +303,7 @@ function reset() {
     tailLength = 2;
     score = 0;
     speed = 9;
+    isPaused = false;
     drawScore();
     randomApple();
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);

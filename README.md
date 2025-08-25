@@ -25,7 +25,7 @@ Snake Game là một dự án trò chơi web cổ điển được phát triển
 
 2. Mở file `index.html` bằng trình duyệt web bất kỳ.
 
-Hoặc truy cập trực tiếp: [Link demo của trò chơi](#) (Sẽ update khi deploy)
+Hoặc truy cập trực tiếp: [https://leminh108.github.io/KyNangNgheNghiep_Group2/](#) (Sẽ update khi deploy)
 
 ### Cách chơi
 
