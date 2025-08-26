@@ -20,7 +20,7 @@ Snake Game là một dự án trò chơi web cổ điển được phát triển
 1. Clone repository này về máy của bạn:
 
     ```bash
-    git clone https://github.com/leminh108/KyNangNgheNghiep_Group2.git
+    git clone https://github.com/leminh108/Snake_Game.git
     ```
 
 2. Mở file `index.html` bằng trình duyệt web bất kỳ.
