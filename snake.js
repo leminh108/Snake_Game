@@ -1,3 +1,8 @@
+// ===== Import highscore modules =====
+import { showPreStartModal, showGameOverModal } from './ui-modals.js';
+// Import test data helper (chỉ dùng cho development)
+import './test-data.js';
+
 const btn = document.getElementById("themeToggle");
 if (localStorage.getItem("theme") === "light") {
     document.documentElement.classList.add("light");
@@ -83,6 +88,8 @@ let appleX = 5,
 let score = 0;
 let speed = 9;
 let isPaused = false;
+let gameState = 'prestart'; // 'prestart', 'playing', 'gameover'
+let currentUsername = '';
 
 const sfxEat = document.getElementById("sfxEat");
 const sfxLose = document.getElementById("sfxLose");
@@ -202,6 +209,16 @@ function gameOver() {
         sfxLose.currentTime = 0;
         sfxLose.play();
     } catch {}
+    
+    // Set game state và trigger hook highscore
+    gameState = 'gameover';
+    
+    // Hook để hiển thị popup save/skip score
+    setTimeout(() => {
+        if (window.onGameOver) {
+            window.onGameOver(score);
+        }
+    }, 1000); // Delay 1s để người chơi thấy game over screen
 }
 
 // ===== Loop =====
@@ -210,9 +227,22 @@ function loop(t) {
     // Always continue the animation loop
     requestAnimationFrame(loop);
     
+    // Nếu đang ở pre-start state, chỉ vẽ nền và return
+    if (gameState === 'prestart') {
+        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        drawBoard();
+        drawPreStartMessage();
+        return;
+    }
+    
     // If paused, just draw the paused overlay and return
     if (isPaused) {
         drawPausedOverlay();
+        return;
+    }
+    
+    // Nếu game over, không update logic nữa
+    if (gameState === 'gameover') {
         return;
     }
     
@@ -253,6 +283,16 @@ function loop(t) {
     drawSnake();
 }
 
+function drawPreStartMessage() {
+    const size = tileSize();
+    ctx.fillStyle = theme("text");
+    ctx.font = `bold ${Math.floor(size * 0.8)}px Arial`;
+    ctx.textAlign = "center";
+    ctx.fillText("Welcome to Snake Game!", canvas.clientWidth / 2, canvas.clientHeight / 2 - size);
+    ctx.font = `${Math.floor(size * 0.5)}px Arial`;
+    ctx.fillText("Please enter your name to start", canvas.clientWidth / 2, canvas.clientHeight / 2 + size * 0.5);
+}
+
 // ===== Controls =====
 document.addEventListener("keydown", (e) => {
     switch (e.key) {
@@ -286,8 +326,8 @@ document.addEventListener("keydown", (e) => {
 });
 
 function togglePause() {
-    // Only allow pause if game is actually running (not at start screen)
-    if (xVelocity !== 0 || yVelocity !== 0) {
+    // Only allow pause if game is actually running (not at start screen or game over)
+    if (gameState === 'playing' && (xVelocity !== 0 || yVelocity !== 0)) {
         isPaused = !isPaused;
     }
 }
@@ -295,6 +335,13 @@ function togglePause() {
 document.getElementById("restart").addEventListener("click", reset);
 
 function reset() {
+    // Nếu đang ở prestart, hiển thị modal nhập tên
+    if (gameState === 'prestart') {
+        showPreStartModal();
+        return;
+    }
+    
+    // Reset game state
     headX = 10;
     headY = 10;
     xVelocity = 0;
@@ -304,13 +351,70 @@ function reset() {
     score = 0;
     speed = 9;
     isPaused = false;
+    gameState = 'prestart';
     drawScore();
     randomApple();
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     requestAnimationFrame(loop);
+    
+    // Hiển thị modal nhập tên
+    showPreStartModal();
 }
+
+// ===== Highscore integration functions =====
+
+/**
+ * Bắt đầu game với username đã nhập
+ * @param {string} username - Tên người chơi
+ */
+window.startGame = function(username) {
+    currentUsername = username;
+    gameState = 'playing';
+    
+    // Reset lại game state để bắt đầu fresh
+    headX = 10;
+    headY = 10;
+    xVelocity = 0;
+    yVelocity = 0;
+    snakeParts = [];
+    tailLength = 2;
+    score = 0;
+    speed = 9;
+    isPaused = false;
+    
+    drawScore();
+    randomApple();
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    
+    console.log(`🎮 Game started for player: ${username}`);
+};
+
+/**
+ * Hook được gọi khi game over để hiển thị popup save/skip
+ * @param {number} finalScore - Điểm số cuối cùng
+ */
+window.onGameOver = function(finalScore) {
+    console.log(`💀 Game Over! Score: ${finalScore}, Player: ${currentUsername}`);
+    showGameOverModal(finalScore);
+};
+
+/**
+ * Restart game sau khi đóng leaderboard hoặc skip save
+ */
+window.restartGame = function() {
+    console.log('🔄 Restarting game...');
+    reset();
+};
 
 // ===== Start =====
 randomApple();
 drawScore();
 requestAnimationFrame(loop);
+
+// Hiển thị modal pre-start khi trang load
+window.addEventListener('load', () => {
+    // Delay nhỏ để đảm bảo tất cả elements đã load
+    setTimeout(() => {
+        showPreStartModal();
+    }, 500);
+});

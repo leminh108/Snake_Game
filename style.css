@@ -175,4 +175,18 @@ canvas {
         padding: 8px 12px;
         font-size: 14px;
     }
+    
+    /* Modal responsive */
+    .modal-content {
+        padding: 20px;
+        max-width: 350px;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
 }

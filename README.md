@@ -1,17 +1,28 @@
-# 🐍 Snake Game - Trò Chơi Con Rắn
+# 🐍 Snake Game với Highscore - Trò Chơi Con Rắn
 
 ## 📖 Giới thiệu
 
-Snake Game là một dự án trò chơi web cổ điển được phát triển bởi Team 2. Đây là phiên bản hiện đại của trò chơi con rắn kinh điển từng gắn liền với Nokia và tuổi thơ của nhiều người. Trò chơi được xây dựng hoàn toàn bằng HTML, CSS và JavaScript thuần, không sử dụng bất kỳ thư viện ngoài nào.
+Snake Game là một dự án trò chơi web cổ điển được phát triển bởi Team 2 với tính năng Highscore được tích hợp Firebase Firestore. Đây là phiên bản hiện đại của trò chơi con rắn kinh điển với khả năng lưu và xếp hạng điểm số toàn cầu.
 
 ## 🎮 Tính năng
 
+### Tính năng game cơ bản:
 -   Điều khiển rắn bằng phím mũi tên
 -   Hệ thống tính điểm
 -   Tăng độ khó theo thời gian và số điểm đạt được
 -   Hiệu ứng âm thanh khi ăn mồi và khi kết thúc trò chơi
 -   Giao diện thân thiện, dễ sử dụng
 -   Thiết kế responsive, hỗ trợ nhiều kích thước màn hình
+-   Chế độ Dark/Light theme
+
+### Tính năng Highscore mới:
+-   🎯 Nhập tên người chơi trước khi bắt đầu
+-   💾 Lưu điểm số lên cloud database (Firebase Firestore)
+-   🏆 Xem bảng xếp hạng Top 5 toàn cầu  
+-   📊 Hiển thị thứ hạng cá nhân
+-   ⚡ Realtime leaderboard updates
+-   🔒 Bảo mật với validation đầu vào
+-   📱 UI modals responsive
 
 ## ⚙️ Cách cài đặt và chơi
 
@@ -25,64 +36,133 @@ Snake Game là một dự án trò chơi web cổ điển được phát triển
 
 2. Mở file `index.html` bằng trình duyệt web bất kỳ.
 
-Hoặc truy cập trực tiếp: [Snake Game](https://leminh108.github.io/Snake_Game/)
-<img width="2123" height="1286" alt="image" src="https://github.com/user-attachments/assets/29a3914c-a8db-4501-9a4d-c92804d06036" />
-
-
+**Lưu ý**: Game sử dụng ES Modules và Firebase, cần chạy qua HTTP server thay vì mở file trực tiếp. Bạn có thể:
+- Sử dụng Live Server extension trong VS Code
+- Chạy `python -m http.server 8000` trong thư mục dự án
+- Hoặc truy cập trực tiếp: [Snake Game](https://leminh108.github.io/Snake_Game/)
 
 ### Cách chơi
 
--   Sử dụng các phím mũi tên (↑, ↓, ←, →) để di chuyển con rắn
--   Ăn mồi (hình vuông màu đỏ) để tăng điểm và chiều dài của rắn
--   Tránh va chạm với thân rắn hoặc tường
--   Nhấn phím Enter để chơi lại khi trò chơi kết thúc
+1. **Bắt đầu**: Nhập tên của bạn (1-20 ký tự) và nhấn "Start Game"
+2. **Điều khiển**: Sử dụng các phím mũi tên (↑, ↓, ←, →) để di chuyển con rắn
+3. **Mục tiêu**: Ăn mồi (hình vuông màu đỏ) để tăng điểm và chiều dài của rắn
+4. **Tránh**: Va chạm với thân rắn hoặc tường sẽ kết thúc trò chơi
+5. **Tạm dừng**: Nhấn phím Space để tạm dừng/tiếp tục
+6. **Kết thúc**: Khi Game Over, chọn lưu điểm để xem leaderboard hoặc bỏ qua để chơi lại ngay
 
 ## 🔍 Cấu trúc dự án
 
 ```
-Snake-game-main/
-├── ez.mp3                # Âm thanh khi ăn mồi
-├── gameover.mp4          # Âm thanh kết thúc trò chơi
-├── index.html            # File HTML chính
-├── snake.js              # Logic trò chơi
-├── style.css             # File CSS cho giao diện
-└── README.md             # Tài liệu hướng dẫn
+Snake_Game/
+├── assets/
+│   └── sounds/
+│       ├── Win.wav           # Âm thanh khi ăn mồi
+│       └── Lose.wav          # Âm thanh kết thúc trò chơi
+├── firebase-config.js        # Cấu hình Firebase
+├── leaderboard-api.js        # API quản lý highscore
+├── ui-modals.js             # UI components (modals)
+├── index.html               # File HTML chính
+├── snake.js                 # Logic trò chơi chính
+├── style.css                # File CSS cho giao diện
+└── README.md                # Tài liệu hướng dẫn
 ```
 
 ## 🛠️ Công nghệ sử dụng
 
+### Frontend:
 -   **HTML5**: Cấu trúc trang web và phần tử Canvas
--   **CSS3**: Tạo giao diện người dùng với gradient background và hiệu ứng shadow
--   **JavaScript**: Xử lý logic trò chơi, điều khiển, va chạm và animation
--   **HTML5 Canvas**: Vẽ và cập nhật hình ảnh trò chơi
--   **Font Awesome**: Biểu tượng cho liên kết mạng xã hội
--   **Google Fonts**: Sử dụng font Bakbak One cho trò chơi
+-   **CSS3**: Giao diện responsive với Dark/Light theme
+-   **JavaScript ES Modules**: Logic game và tích hợp Firebase
+-   **HTML5 Canvas**: Rendering game graphics
+-   **Google Fonts**: Font Bakbak One
+
+### Backend & Database:
+-   **Firebase v10**: Platform cloud computing
+-   **Cloud Firestore**: NoSQL database cho highscore
+-   **Firebase Hosting**: Deployment platform
 
 ## 📝 Chi tiết kỹ thuật
 
 ### Logic trò chơi
-
 -   Con rắn được thiết kế dưới dạng một mảng các phần tử SnakePart
 -   Bảng trò chơi được chia thành lưới 20x20
 -   Tốc độ trò chơi tăng dần khi người chơi đạt được nhiều điểm hơn
 -   Có cơ chế kiểm tra va chạm với tường và thân rắn
 -   Hệ thống phát hiện va chạm với mồi và cộng điểm
 
+### Hệ thống Highscore
+-   **Collection**: `scores` trong Firestore
+-   **Document structure**: 
+    ```json
+    {
+      "username": "string (1-20 chars)",
+      "score": "number (≥0)", 
+      "createdAt": "serverTimestamp"
+    }
+    ```
+-   **Ranking algorithm**: Sắp xếp theo score giảm dần, createdAt tăng dần (tie-breaker)
+-   **Security**: Input validation và HTML escaping
+-   **Performance**: Sử dụng composite indexes và aggregate queries
+
 ### Tính năng chính
+-   **Game States**: `prestart` → `playing` → `gameover`
+-   **Username Management**: LocalStorage persistence 
+-   **Modal System**: Pre-start input, Save/Skip popup, Leaderboard display
+-   **Error Handling**: Network failures, validation errors
+-   **Responsive Design**: Mobile-friendly modals
 
--   **Chế độ điều khiển thông minh**: Ngăn không cho rắn đi ngược lại (ví dụ: không thể đi xuống khi đang đi lên)
--   **Hệ thống tính điểm**: Hiển thị điểm số hiện tại ở góc phải trên
--   **Cơ chế tăng độ khó**: Tốc độ tăng khi đạt 2, 5, 10 và 20 điểm
--   **Thông báo kết thúc**: Hiển thị "Game over!" khi trò chơi kết thúc
+## 🔧 Thiết lập Firebase (cho developers)
 
-## 🔮 Phát triển trong tương lai
+### 1. Cấu hình Firestore Rules:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /scores/{document} {
+      allow read: if true;
+      allow create: if isValidScore(resource.data);
+      allow update, delete: if false;
+    }
+  }
+}
 
--   [ ] Thêm chế độ chơi (dễ, trung bình, khó)
--   [ ] Tạo bảng xếp hạng điểm cao
--   [ ] Thêm các vật phẩm đặc biệt (tăng tốc, chậm lại, điểm đôi)
--   [ ] Tùy chọn tùy chỉnh màu sắc con rắn
--   [ ] Hỗ trợ điều khiển cảm ứng cho thiết bị di động
--   [ ] Thêm nhiều hiệu ứng âm thanh và hình ảnh
+function isValidScore(data) {
+  return data.keys().hasAll(['username', 'score', 'createdAt']) &&
+         data.username is string &&
+         data.username.size() >= 1 && data.username.size() <= 20 &&
+         data.score is number &&
+         data.score >= 0 &&
+         data.createdAt == request.time;
+}
+```
+
+### 2. Tạo Composite Indexes:
+- Collection: `scores`
+- Fields: `score` (Descending), `createdAt` (Ascending)
+
+### 3. Single Field Indexes (tự động):
+- `score` (Descending)
+- `createdAt` (Ascending)
+
+## 🔮 Roadmap phát triển
+
+### Đã hoàn thành ✅:
+-   [x] Tích hợp Firebase Firestore 
+-   [x] Username input với validation
+-   [x] Save/Skip popup khi Game Over
+-   [x] Leaderboard Top 5 với rank calculation
+-   [x] Error handling và UX improvements
+-   [x] Dark/Light theme support
+-   [x] Mobile responsive design
+
+### Tiếp theo 🚧:
+-   [ ] Authentication system (đăng nhập Google)
+-   [ ] Profile management & avatar
+-   [ ] Social features (share score)
+-   [ ] Game statistics & analytics
+-   [ ] Multiple game modes
+-   [ ] Tournament system
+-   [ ] Real-time multiplayer
 
 ## 🤝 Đóng góp
 
