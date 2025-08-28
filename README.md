@@ -24,22 +24,49 @@ Snake Game là một dự án trò chơi web cổ điển được phát triển
 -   🔒 Bảo mật với validation đầu vào
 -   📱 UI modals responsive
 
-## ⚙️ Cách cài đặt và chơi
+## ⚙️ Cách cài đặt và chọi
 
-### Cài đặt
+### Cài đặt Local Development
 
 1. Clone repository này về máy của bạn:
-
     ```bash
     git clone https://github.com/leminh108/Snake_Game.git
+    cd Snake_Game
     ```
 
-2. Mở file `index.html` bằng trình duyệt web bất kỳ.
+2. Tạo file `.env` cho environment variables:
+    ```bash
+    # Copy từ file mẫu
+    cp .env.example .env
+    
+    # Hoặc tạo thủ công với Firebase config của bạn
+    echo "VITE_FIREBASE_API_KEY=your-api-key" > .env
+    echo "VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain" >> .env
+    echo "VITE_FIREBASE_PROJECT_ID=your-project-id" >> .env
+    echo "VITE_FIREBASE_STORAGE_BUCKET=your-storage-bucket" >> .env
+    echo "VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id" >> .env
+    echo "VITE_FIREBASE_APP_ID=your-app-id" >> .env
+    ```
 
-**Lưu ý**: Game sử dụng ES Modules và Firebase, cần chạy qua HTTP server thay vì mở file trực tiếp. Bạn có thể:
-- Sử dụng Live Server extension trong VS Code
-- Chạy `python -m http.server 8000` trong thư mục dự án
-- Hoặc truy cập trực tiếp: [Snake Game](https://leminh108.github.io/Snake_Game/)
+3. Chạy local server:
+    ```bash
+    # Sử dụng Python
+    python -m http.server 8000
+    
+    # Hoặc sử dụng Live Server extension trong VS Code
+    # Hoặc truy cập: https://leminh108.github.io/Snake_Game/
+    ```
+
+**Lưu ý**: Game sử dụng ES Modules và Firebase, cần chạy qua HTTP server thay vì mở file trực tiếp.
+
+### 🚀 Deployment Setup
+
+Để deploy lên GitHub Pages hoặc các platform khác, xem chi tiết trong **[SETUP.md](./SETUP.md)**.
+
+**Tóm tắt nhanh**:
+- **GitHub Pages**: Cần setup GitHub Secrets với Firebase config
+- **Netlify/Vercel**: Thêm environment variables trong dashboard
+- **Firebase Hosting**: Sử dụng Firebase CLI
 
 ### Cách chơi
 
