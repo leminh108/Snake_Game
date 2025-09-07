@@ -1,5 +1,5 @@
 // ===== Import highscore modules =====
-import { showPreStartModal, showGameOverModal } from './ui-modals.js';
+import { showPreStartModal, showGameOverModal, showLeaderboardOnly } from './ui-modals.js';
 // Import test data helper (chỉ dùng cho development)
 import './test-data.js';
 
@@ -333,6 +333,9 @@ function togglePause() {
 }
 
 document.getElementById("restart").addEventListener("click", reset);
+document.getElementById("show-leaderboard").addEventListener("click", () => {
+    showLeaderboardOnly();
+});
 
 function reset() {
     // Nếu đang ở prestart, hiển thị modal nhập tên

@@ -627,6 +627,82 @@ const modalStyles = `
 `;
 
 // Thêm styles vào document head
+/**
+ * Hiển thị leaderboard tổng thể (không cần điểm số hiện tại)
+ */
+export async function showLeaderboardOnly() {
+  // Tạo modal loading trước
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal-content leaderboard-modal loading">
+      <h2>🏆 Leaderboard</h2>
+      <div class="loading-message">
+        ⏳ Loading leaderboard...
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  try {
+    // Load top scores
+    const topScores = await getTopScores(10);
+    
+    console.log('🔍 Debug Leaderboard Data:', { topScores });
+    
+    // Cập nhật nội dung modal
+    const content = modal.querySelector('.modal-content');
+    content.classList.remove('loading');
+    content.innerHTML = `
+      <h2>🏆 Leaderboard</h2>
+      <div class="leaderboard-section">
+        <h3>🥇 Top 10 Players</h3>
+        <div class="leaderboard-list">
+          ${generateLeaderboardHTML(topScores)}
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button id="close-leaderboard-btn" class="btn primary">
+          ✅ Close
+        </button>
+      </div>
+    `;
+    
+    // Event listener cho nút close
+    const closeBtn = modal.querySelector('#close-leaderboard-btn');
+    closeBtn.addEventListener('click', () => {
+      modal.remove();
+    });
+    
+    // Focus vào nút close
+    setTimeout(() => closeBtn.focus(), 100);
+    
+  } catch (error) {
+    console.error('Error loading leaderboard:', error);
+    
+    // Hiển thị lỗi
+    const content = modal.querySelector('.modal-content');
+    content.classList.remove('loading');
+    content.innerHTML = `
+      <h2>🏆 Leaderboard</h2>
+      <div class="error-message">
+        ❌ Failed to load leaderboard: ${error.message}
+      </div>
+      <div class="modal-buttons">
+        <button id="close-leaderboard-btn" class="btn primary">
+          ✅ Close
+        </button>
+      </div>
+    `;
+    
+    const closeBtn = modal.querySelector('#close-leaderboard-btn');
+    closeBtn.addEventListener('click', () => {
+      modal.remove();
+    });
+  }
+}
+
 if (!document.querySelector('#modal-styles')) {
   const styleElement = document.createElement('div');
   styleElement.innerHTML = modalStyles;

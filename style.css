@@ -119,6 +119,21 @@ canvas {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 560px) {
+    .hud {
+        gap: 8px;
+        justify-content: center;
+    }
+    
+    .hud .btn {
+        flex: 1;
+        min-width: 0;
+        font-size: 13px;
+        padding: 8px 10px;
+    }
 }
 
 .score {
@@ -143,11 +158,24 @@ canvas {
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
     transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
+
+.btn.secondary {
+    background: linear-gradient(160deg, var(--muted), #8a8a95);
+    color: white;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
 .btn:hover {
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
     transform: scale(1.08);
     filter: brightness(1.05);
 }
+
+.btn.secondary:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+    filter: brightness(1.1);
+}
+
 .btn:active {
     transform: scale(0.96);
 }
@@ -167,13 +195,18 @@ canvas {
 @media (max-width: 560px) {
     .hud {
         gap: 8px;
+        justify-content: center;
     }
+    
     .score {
         font-size: 14px;
     }
-    .btn {
-        padding: 8px 12px;
-        font-size: 14px;
+    
+    .hud .btn {
+        flex: 1;
+        min-width: 0;
+        font-size: 13px;
+        padding: 8px 10px;
     }
     
     /* Modal responsive */
@@ -186,7 +219,9 @@ canvas {
         flex-direction: column;
     }
     
-    .btn {
+    .modal-buttons .btn {
         width: 100%;
+        padding: 8px 12px;
+        font-size: 14px;
     }
 }
