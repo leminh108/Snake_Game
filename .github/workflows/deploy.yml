@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, minhhl/test-deploy ]
+    branches: [minhhl/test-deploy ]
   workflow_dispatch:
 
 permissions:
