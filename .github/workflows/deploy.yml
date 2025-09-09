@@ -39,7 +39,7 @@ jobs:
           [ -z "${VITE_FIREBASE_PROJECT_ID}" ] && missing+=("VITE_FIREBASE_PROJECT_ID")
           [ -z "${VITE_FIREBASE_STORAGE_BUCKET}" ] && missing+=("VITE_FIREBASE_STORAGE_BUCKET")
           if [ ${#missing[@]} -gt 0 ]; then
-            echo "Thiếu GitHub Secrets: ${missing[*]}" && exit 1
+            echo "Thiếu GitHub Secrets 1: ${missing[*]}" && exit 1
           fi
           rm -f env.js
           cat > env.js << 'EOF'
