@@ -21,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate env.js from GitHub Secrets if available
+      - name: Generate env.js from GitHub Secrets (always overwrite)
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
@@ -30,9 +30,14 @@ jobs:
           VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
           VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
         run: |
-          if [ -n "${VITE_FIREBASE_API_KEY}" ]; then
-            echo "Đang tạo env.js từ Secrets..."
-            cat > env.js << 'EOF'
+          echo "Luôn ghi đè env.js từ GitHub Secrets..."
+          if [ -z "${VITE_FIREBASE_API_KEY}" ] || [ -z "${VITE_FIREBASE_APP_ID}" ] || \
+             [ -z "${VITE_FIREBASE_AUTH_DOMAIN}" ] || [ -z "${VITE_FIREBASE_MESSAGING_SENDER_ID}" ] || \
+             [ -z "${VITE_FIREBASE_PROJECT_ID}" ] || [ -z "${VITE_FIREBASE_STORAGE_BUCKET}" ]; then
+            echo "Thiếu một hoặc nhiều GitHub Secrets cần thiết." && exit 1
+          fi
+          rm -f env.js
+          cat > env.js << 'EOF'
           window.env = {
               VITE_FIREBASE_API_KEY: "${{ secrets.VITE_FIREBASE_API_KEY }}",
               VITE_FIREBASE_APP_ID: "${{ secrets.VITE_FIREBASE_APP_ID }}",
@@ -42,17 +47,6 @@ jobs:
               VITE_FIREBASE_STORAGE_BUCKET: "${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}"
           };
           EOF
-          else
-            echo "Secrets không có/không được set. Giữ nguyên hoặc fallback env.js hiện có."
-            if [ -f env.js ] && [ -s env.js ]; then
-              echo "env.js đã tồn tại, giữ nguyên."
-            elif [ -f env.prod.js ]; then
-              echo "env.js không có. Dùng env.prod.js cho deploy."
-              cp env.prod.js env.js
-            else
-              echo "Thiếu cả env.js và env.prod.js" && exit 1
-            fi
-          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
