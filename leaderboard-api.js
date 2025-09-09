@@ -1,5 +1,5 @@
 // leaderboard-api.js - API cho quản lý highscore với Firestore
-import { db } from './firebase-config-simple.js';
+import { db } from './firebase-config.js';
 import { 
   collection, 
   addDoc, 

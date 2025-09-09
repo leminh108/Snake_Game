@@ -2,36 +2,22 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js';
 import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js';
 
-// Lấy environment variables với fallback
-const getEnvVar = (key, fallback = null) => {
-  // Kiểm tra nếu có Vite environment
-  if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[key]) {
-    return import.meta.env[key];
-  }
-  
-  // Kiểm tra window.env (từ env-loader.js)
+// Lấy environment variables từ window.env (được sinh ra từ file env.js) với fallback cho production
+const getEnvVar = (key, fallback) => {
   if (typeof window !== 'undefined' && window.env && window.env[key]) {
     return window.env[key];
   }
-  
-  // Sử dụng fallback nếu có
-  if (fallback) {
-    console.warn(`⚠️ Using fallback value for ${key}`);
-    return fallback;
-  }
-  
-  // Throw error nếu không tìm thấy và không có fallback
-  throw new Error(`Environment variable ${key} is not defined. Please check your .env file.`);
+  return fallback;
 };
 
-// Firebase config từ environment variables với fallback cho production
+// Firebase config với environment variables
 const firebaseConfig = {
-  apiKey: getEnvVar("VITE_FIREBASE_API_KEY", "AIzaSyCmEGJcbWByoqLtlMGi1jGvQ6Vniq8CBYo"),
-  authDomain: getEnvVar("VITE_FIREBASE_AUTH_DOMAIN", "snake-game-4b661.firebaseapp.com"),
-  projectId: getEnvVar("VITE_FIREBASE_PROJECT_ID", "snake-game-4b661"),
-  storageBucket: getEnvVar("VITE_FIREBASE_STORAGE_BUCKET", "snake-game-4b661.appspot.com"),
-  messagingSenderId: getEnvVar("VITE_FIREBASE_MESSAGING_SENDER_ID", "290253437440"),
-  appId: getEnvVar("VITE_FIREBASE_APP_ID", "1:290253437440:web:ff9664917a32b497f4b6e5")
+  apiKey: getEnvVar("VITE_FIREBASE_API_KEY", undefined),
+  authDomain: getEnvVar("VITE_FIREBASE_AUTH_DOMAIN", undefined),
+  projectId: getEnvVar("VITE_FIREBASE_PROJECT_ID", undefined),
+  storageBucket: getEnvVar("VITE_FIREBASE_STORAGE_BUCKET", undefined),
+  messagingSenderId: getEnvVar("VITE_FIREBASE_MESSAGING_SENDER_ID", undefined),
+  appId: getEnvVar("VITE_FIREBASE_APP_ID", undefined)
 };
 
 // Khởi tạo Firebase
