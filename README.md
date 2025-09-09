@@ -2,7 +2,7 @@
 
 <div align="center">
 
-## 🎮 [**CHƠI NGAY TẠI ĐÂY**](https://leminh10## 🚀 **Dành cho Developers**
+## 🎮 [**CHƠI NGAY TẠI ĐÂY**](https://leminh108.github.io/Snake_Game/ 🚀 **Dành cho Developers**
 
 Muốn chạy project local hoặc đóng góp? Xem hướng dẫn chi tiết trong **[SETUP.md](./SETUP.md)**
 
