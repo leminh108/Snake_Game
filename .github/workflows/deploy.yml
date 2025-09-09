@@ -23,8 +23,13 @@ jobs:
 
       - name: Use production env if available
         run: |
-          if [ -f env.prod.js ]; then
+          if [ -f env.js ] && [ -s env.js ]; then
+            echo "env.js đã tồn tại, giữ nguyên."
+          elif [ -f env.prod.js ]; then
+            echo "env.js không có. Dùng env.prod.js cho deploy."
             cp env.prod.js env.js
+          else
+            echo "Thiếu cả env.js và env.prod.js" && exit 1
           fi
 
       - name: Upload artifact
