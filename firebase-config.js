@@ -10,14 +10,23 @@ const getEnvVar = (key, fallback) => {
   return fallback;
 };
 
+
+console.log(getEnvVar("VITE_FIREBASE_API_KEY", undefined));
+console.log(getEnvVar("VITE_FIREBASE_AUTH_DOMAIN", undefined));
+console.log(getEnvVar("VITE_FIREBASE_PROJECT_ID", undefined));
+console.log(getEnvVar("VITE_FIREBASE_STORAGE_BUCKET", undefined));
+console.log(getEnvVar("VITE_FIREBASE_MESSAGING_SENDER_ID", undefined));
+console.log(getEnvVar("VITE_FIREBASE_APP_ID", undefined));  
+
 // Firebase config với environment variables
+
 const firebaseConfig = {
-  apiKey: getEnvVar("VITE_FIREBASE_API_KEY", undefined),
-  authDomain: getEnvVar("VITE_FIREBASE_AUTH_DOMAIN", undefined),
-  projectId: getEnvVar("VITE_FIREBASE_PROJECT_ID", undefined),
-  storageBucket: getEnvVar("VITE_FIREBASE_STORAGE_BUCKET", undefined),
-  messagingSenderId: getEnvVar("VITE_FIREBASE_MESSAGING_SENDER_ID", undefined),
-  appId: getEnvVar("VITE_FIREBASE_APP_ID", undefined)
+  apiKey: getEnvVar("VITE_FIREBASE_API_KEY", "AIzaSyCmEGJcbWByoqLtlMGi1jGvQ6Vniq8CBYo"),
+  authDomain: getEnvVar("VITE_FIREBASE_AUTH_DOMAIN", "snake-game-4b661.firebaseapp.com"),
+  projectId: getEnvVar("VITE_FIREBASE_PROJECT_ID", "snake-game-4b661"),
+  storageBucket: getEnvVar("VITE_FIREBASE_STORAGE_BUCKET", "snake-game-4b661.appspot.com"),
+  messagingSenderId: getEnvVar("VITE_FIREBASE_MESSAGING_SENDER_ID", "290253437440"),
+  appId: getEnvVar("VITE_FIREBASE_APP_ID", "1:290253437440:web:ff9664917a32b497f4b6e5")
 };
 
 // Khởi tạo Firebase
