@@ -1,152 +1,83 @@
-# 🐍 Snake Game with Firebase Leaderboard
+# 🐍 Game Rắn Săn Mồi - Snake Game
 
-A modern Snake game built with vanilla JavaScript, featuring real-time leaderboard functionality using Firebase Firestore. Works both locally and when deployed to GitHub Pages.
+Trò chơi rắn săn mồi cổ điển với giao diện hiện đại và bảng xếp hạng toàn cầu. Chơi ngay tại: **https://leminh108.github.io/Snake_Game/**
 
-## ✨ Features
+## 🎮 Cách Chơi
 
-- 🎮 Classic Snake gameplay with modern UI
-- 🏆 Global leaderboard with Firebase Firestore
-- 🌙 Dark/Light theme toggle
-- 📱 Responsive design
-- 🔊 Sound effects
-- ⏸️ Pause/Resume functionality
-- 💾 Offline mode when Firebase is unavailable
+### Điều Khiển
+- **Phím mũi tên (←→↑↓)**: Di chuyển rắn
+- **Phím Space**: Tạm dừng/Tiếp tục game
+- **Phím Enter**: Chơi lại
 
-## 🚀 Quick Start
+### Luật Chơi
+1. **Mục tiêu**: Điều khiển con rắn ăn táo đỏ để tăng điểm số
+2. **Tăng trưởng**: Mỗi lần ăn táo, rắn sẽ dài ra và bạn được cộng điểm
+3. **Thua cuộc**: Game kết thúc khi rắn đâm vào tường hoặc cắn vào chính mình
+4. **Chiến thắng**: Cố gắng đạt điểm số cao nhất có thể!
 
-### Local Development
+## ✨ Tính Năng
 
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd Snake_Game
-   ```
+- 🎮 **Gameplay cổ điển**: Trải nghiệm game rắn săn mồi quen thuộc
+- 🏆 **Bảng xếp hạng toàn cầu**: So tài với người chơi khắp thế giới
+- 🌙 **Chế độ sáng/tối**: Chuyển đổi giao diện theo sở thích
+- 📱 **Tương thích mobile**: Chơi được trên mọi thiết bị
+- 🔊 **Âm thanh**: Hiệu ứng âm thanh sống động
+- ⏸️ **Tạm dừng**: Dừng và tiếp tục game bất cứ lúc nào
+- 💾 **Chơi offline**: Vẫn chơi được khi không có internet
 
-2. **Run a local server**
-   ```bash
-   # Using Python 3
-   python -m http.server 8000
-   
-   # Using Node.js (if you have serve installed)
-   npx serve .
-   ```
+## � Bảng Xếp Hạng
 
-3. **Quick Setup (Recommended for Firebase)**
-   - Go to `http://localhost:8000/setup-local.html`
-   - Click "Setup Firebase Config" 
-   - Click "Test & Go to Game"
+- Điểm số của bạn sẽ được lưu vào bảng xếp hạng toàn cầu
+- Nhập tên của bạn để xuất hiện trên bảng xếp hạng
+- Xem được top 10 người chơi có điểm cao nhất
+- Bảng xếp hạng cập nhật theo thời gian thực
 
-4. **Alternative: Manual Firebase Setup**
-   - Copy `env.example` to `.env` and fill in your Firebase values
-   - Go to `http://localhost:8000`
-   - Open browser console (F12)
-   - Run: `loadEnvFromFile()`
-   - Reload the page
+## � Mẹo Chơi Game
 
-5. **Test Firebase connection**
-   - Go to `http://localhost:8000/test-firebase-config.html`
-   - Click "Test Firebase Connection"
+### Cho Người Mới Bắt Đầu
+- **Bắt đầu chậm**: Đừng vội vàng, hãy làm quen với cách điều khiển
+- **Lập kế hoạch**: Suy nghĩ trước vài bước để tránh bị kẹt
+- **Tránh góc**: Đừng để rắn chạy vào góc, sẽ khó thoát ra
 
-### GitHub Pages Deployment
+### Cho Người Chơi Giàu Kinh Nghiệm
+- **Tận dụng không gian**: Sử dụng toàn bộ màn hình để di chuyển
+- **Tạo vòng xoắn**: Di chuyển theo hình xoắn ốc để kiểm soát tốt hơn
+- **Dự đoán vị trí táo**: Chuẩn bị sẵn đường đi đến táo tiếp theo
 
-1. **Set up GitHub Secrets**
-   - Go to repository Settings → Secrets and variables → Actions
-   - Add these repository secrets:
-     - `VITE_FIREBASE_API_KEY`
-     - `VITE_FIREBASE_AUTH_DOMAIN`
-     - `VITE_FIREBASE_PROJECT_ID`
-     - `VITE_FIREBASE_STORAGE_BUCKET`
-     - `VITE_FIREBASE_MESSAGING_SENDER_ID`
-     - `VITE_FIREBASE_APP_ID`
+## � Truy Cập Game
 
-2. **Enable GitHub Pages**
-   - Go to repository Settings → Pages
-   - Source: GitHub Actions
-   - The workflow is already configured in `.github/workflows/deploy.yml`
+### Link Chính Thức
+**🎮 Chơi ngay tại: https://leminh108.github.io/Snake_Game/**
 
-## 🎮 How to Play
+### Yêu Cầu Hệ Thống
+- **Trình duyệt**: Chrome, Firefox, Safari, Edge (phiên bản mới)
+- **JavaScript**: Phải được bật
+- **Kết nối internet**: Cần có để lưu điểm vào bảng xếp hạng (không bắt buộc để chơi)
 
-- Use arrow keys (←→↑↓) to move the snake
-- Collect red apples to grow and increase your score
-- Avoid hitting walls or yourself
-- Press Space to pause/resume
-- Press Enter or "Play again" to restart
+## � Xử Lý Sự Cố
 
-## 🏗️ Project Structure
+### Game Không Tải Được
+1. **Kiểm tra kết nối internet**
+2. **Làm mới trang** (F5 hoặc Ctrl+R)
+3. **Xóa cache trình duyệt**
+4. **Thử trình duyệt khác**
 
-```
-Snake_Game/
-├── index.html              # Main game page
-├── snake.js                # Game logic
-├── style.css               # Styles and themes
-├── ui-modals.js           # UI components for modals
-├── leaderboard-api.js     # Firebase leaderboard API
-├── firebase-config.js     # Firebase initialization
-├── env.js                 # Production environment variables
-├── dev-env-loader.js      # Development environment loader
-├── setup-local.html       # Quick local setup tool
-├── test-firebase-config.html # Firebase config testing tool
-├── .env                   # Local environment variables (gitignored)
-├── env.example            # Environment variables template
-└── assets/
-    └── sounds/            # Game sound effects
-```
+### Bảng Xếp Hạng Không Hoạt Động
+1. **Kiểm tra kết nối internet**
+2. **Vẫn có thể chơi game bình thường**
+3. **Điểm số sẽ được lưu khi có internet trở lại**
 
-## 🔧 Configuration
+### Game Chạy Chậm
+1. **Đóng các tab khác**
+2. **Tắt các ứng dụng nặng**
+3. **Thử chế độ ẩn danh của trình duyệt**
 
-### Environment Variables
+## 📱 Chơi Trên Mobile
 
-| Variable | Description |
-|----------|-------------|
-| `VITE_FIREBASE_API_KEY` | Firebase API key |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase auth domain |
-| `VITE_FIREBASE_PROJECT_ID` | Firebase project ID |
-| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender ID |
-| `VITE_FIREBASE_APP_ID` | Firebase app ID |
+- **Vuốt lên/xuống/trái/phải** để điều khiển rắn
+- **Chạm vào màn hình** để tạm dừng
+- **Xoay ngang màn hình** để có trải nghiệm tốt hơn
 
-### Local Development URLs
+## 🎉 Chúc Bạn Chơi Game Vui Vẻ!
 
-- **Main Game:** `http://localhost:8000`
-- **Quick Setup:** `http://localhost:8000/setup-local.html` 
-- **Config Test:** `http://localhost:8000/test-firebase-config.html`
-
-## 🐛 Troubleshooting
-
-### Local Development Issues
-
-1. **Environment variables not loading**
-   - Use the quick setup tool: `http://localhost:8000/setup-local.html`
-   - Or manually run `loadEnvFromFile()` in browser console
-   - Use `test-firebase-config.html` to debug
-
-2. **Firebase connection failed**
-   - Verify Firebase config values
-   - Check browser console for error messages
-   - Ensure Firestore is enabled in Firebase Console
-
-3. **CORS errors**
-   - Use a proper HTTP server (not file:// protocol)
-   - Try different local server options
-
-### Production Issues
-
-1. **Environment variables not replaced**
-   - Check GitHub Secrets are correctly named
-   - Verify GitHub Actions workflow is running
-
-2. **Leaderboard not working**
-   - Verify Firestore security rules
-   - Check browser console for Firebase errors
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test locally
-5. Submit a pull request
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
+Hy vọng bạn sẽ có những phút giây giải trí thú vị với game rắn săn mồi! Đừng quên chia sẻ điểm số cao của bạn với bạn bè nhé! 🐍🏆
