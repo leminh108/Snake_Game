@@ -2,7 +2,30 @@
 
 <div align="center">
 
-## 🎮 [**CHƠI NGAY TẠI ĐÂY**](https://leminh108.github.io/Snake_Game/) 🎮
+## 🎮 [**CHƠI NGAY TẠI ĐÂY**](https://leminh10## 🚀 **Dành cho Developers**
+
+Muốn chạy project local hoặc đóng góp? Xem hướng dẫn chi tiết trong **[SETUP.md](./SETUP.md)**
+
+**Quick start:**
+```bash
+# 1. Clone repo
+git clone https://github.com/leminh108/Snake_Game.git
+cd Snake_Game
+
+# 2. Setup Firebase config
+cp .env.example .env
+# Sau đó edit file .env với Firebase config của bạn
+
+# 3. Chạy local server
+python -m http.server 8000
+
+# 4. Mở http://localhost:8000
+```
+
+**Firebase Setup:**
+- Copy `.env.example` thành `.env`
+- Điền các thông tin Firebase của bạn
+- File `.env` sẽ không được commit (đã có trong `.gitignore`)ake_Game/) 🎮
 
 *Phiên bản hiện đại của trò chơi con rắn kinh điển với hệ thống xếp hạng toàn cầu*
 
