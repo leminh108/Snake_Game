@@ -1,0 +1,8 @@
+window.env = {
+    VITE_FIREBASE_API_KEY: "AIzaSyCmEGJcbWByoqLtlMGi1jGvQ6Vniq8CBYo",
+    VITE_FIREBASE_APP_ID: "1:290253437440:web:ff9664917a32b497f4b6e5",
+    VITE_FIREBASE_AUTH_DOMAIN: "snake-game-4b661.firebaseapp.com",
+    VITE_FIREBASE_MESSAGING_SENDER_ID: "290253437440",
+    VITE_FIREBASE_PROJECT_ID: "snake-game-4b661",
+    VITE_FIREBASE_STORAGE_BUCKET: "snake-game-4b661.firebasestorage.app"
+};
