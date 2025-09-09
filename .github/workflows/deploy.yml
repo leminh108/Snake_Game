@@ -31,10 +31,15 @@ jobs:
           VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
         run: |
           echo "Luôn ghi đè env.js từ GitHub Secrets..."
-          if [ -z "${VITE_FIREBASE_API_KEY}" ] || [ -z "${VITE_FIREBASE_APP_ID}" ] || \
-             [ -z "${VITE_FIREBASE_AUTH_DOMAIN}" ] || [ -z "${VITE_FIREBASE_MESSAGING_SENDER_ID}" ] || \
-             [ -z "${VITE_FIREBASE_PROJECT_ID}" ] || [ -z "${VITE_FIREBASE_STORAGE_BUCKET}" ]; then
-            echo "Thiếu một hoặc nhiều GitHub Secrets cần thiết." && exit 1
+          missing=()
+          [ -z "${VITE_FIREBASE_API_KEY}" ] && missing+=("VITE_FIREBASE_API_KEY")
+          [ -z "${VITE_FIREBASE_APP_ID}" ] && missing+=("VITE_FIREBASE_APP_ID")
+          [ -z "${VITE_FIREBASE_AUTH_DOMAIN}" ] && missing+=("VITE_FIREBASE_AUTH_DOMAIN")
+          [ -z "${VITE_FIREBASE_MESSAGING_SENDER_ID}" ] && missing+=("VITE_FIREBASE_MESSAGING_SENDER_ID")
+          [ -z "${VITE_FIREBASE_PROJECT_ID}" ] && missing+=("VITE_FIREBASE_PROJECT_ID")
+          [ -z "${VITE_FIREBASE_STORAGE_BUCKET}" ] && missing+=("VITE_FIREBASE_STORAGE_BUCKET")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Thiếu GitHub Secrets: ${missing[*]}" && exit 1
           fi
           rm -f env.js
           cat > env.js << 'EOF'
