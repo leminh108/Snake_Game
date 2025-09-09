@@ -1,163 +1,152 @@
-# 🐍 Snake Game - Trò Chơi Con Rắn Cổ Điển
+# 🐍 Snake Game with Firebase Leaderboard
 
-<div align="center">
+A modern Snake game built with vanilla JavaScript, featuring real-time leaderboard functionality using Firebase Firestore. Works both locally and when deployed to GitHub Pages.
 
-## 🎮 [**CHƠI NGAY TẠI ĐÂY**](https://leminh108.github.io/Snake_Game/) 🎮
+## ✨ Features
 
-*Phiên bản hiện đại của trò chơi con rắn kinh điển với hệ thống xếp hạng toàn cầu*
+- 🎮 Classic Snake gameplay with modern UI
+- 🏆 Global leaderboard with Firebase Firestore
+- 🌙 Dark/Light theme toggle
+- 📱 Responsive design
+- 🔊 Sound effects
+- ⏸️ Pause/Resume functionality
+- 💾 Offline mode when Firebase is unavailable
 
-</div>
+## 🚀 Quick Start
 
----
+### Local Development
 
-## � **Giới thiệu**
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd Snake_Game
+   ```
 
-Chào mừng bạn đến với **Snake Game** - một trò chơi con rắn cổ điển được làm mới với công nghệ hiện đại! Trải nghiệm gameplay quen thuộc nhưng với nhiều tính năng thú vị:
+2. **Run a local server**
+   ```bash
+   # Using Python 3
+   python -m http.server 8000
+   
+   # Using Node.js (if you have serve installed)
+   npx serve .
+   ```
 
-- 🏆 **Bảng xếp hạng toàn cầu** - So tài với người chơi khắp thế giới
-- 🎨 **Giao diện đẹp mắt** - Dark/Light theme tùy chọn  
-- 📱 **Responsive** - Chơi mượt mà trên mọi thiết bị
-- 🔊 **Âm thanh sống động** - Hiệu ứng âm thanh chân thực
-- ⚡ **Realtime** - Bảng xếp hạng cập nhật tức thời
+3. **Quick Setup (Recommended for Firebase)**
+   - Go to `http://localhost:8000/setup-local.html`
+   - Click "Setup Firebase Config" 
+   - Click "Test & Go to Game"
 
----
+4. **Alternative: Manual Firebase Setup**
+   - Copy `env.example` to `.env` and fill in your Firebase values
+   - Go to `http://localhost:8000`
+   - Open browser console (F12)
+   - Run: `loadEnvFromFile()`
+   - Reload the page
 
-## 🎯 **Cách chơi**
+5. **Test Firebase connection**
+   - Go to `http://localhost:8000/test-firebase-config.html`
+   - Click "Test Firebase Connection"
 
-### **Bắt đầu game:**
-1. 🌐 Truy cập: **[https://leminh108.github.io/Snake_Game/](https://leminh108.github.io/Snake_Game/)**
-2. ✏️ Nhập tên của bạn (1-20 ký tự)
-3. 🎮 Nhấn "**Start Game**" để bắt đầu
+### GitHub Pages Deployment
 
-### **Điều khiển:**
-- **🎮 Di chuyển**: Sử dụng phím mũi tên `↑` `↓` `←` `→`
-- **⏸️ Tạm dừng**: Nhấn phím `Space` để pause/resume
-- **🔄 Chơi lại**: Nhấn `Enter` hoặc nút "Play again"
-- **🌙/☀️ Đổi theme**: Nút toggle góc trên bên phải
+1. **Set up GitHub Secrets**
+   - Go to repository Settings → Secrets and variables → Actions
+   - Add these repository secrets:
+     - `VITE_FIREBASE_API_KEY`
+     - `VITE_FIREBASE_AUTH_DOMAIN`
+     - `VITE_FIREBASE_PROJECT_ID`
+     - `VITE_FIREBASE_STORAGE_BUCKET`
+     - `VITE_FIREBASE_MESSAGING_SENDER_ID`
+     - `VITE_FIREBASE_APP_ID`
 
-### **Mục tiêu:**
-- 🍎 **Ăn mồi** (chấm đỏ) để tăng điểm và độ dài
-- 🚫 **Tránh va chạm** với tường và thân rắn
-- 🏆 **Đạt điểm cao** để lên bảng xếp hạng
-- 📈 **Thử thách bản thân** với tốc độ ngày càng tăng
+2. **Enable GitHub Pages**
+   - Go to repository Settings → Pages
+   - Source: GitHub Actions
+   - The workflow is already configured in `.github/workflows/deploy.yml`
 
-### **Kết thúc game:**
-- 💾 **Lưu điểm**: Chọn "Save Score" để ghi tên vào bảng xếp hạng
-- ⏭️ **Bỏ qua**: Chọn "Skip" để chơi lại ngay lập tức
-- 🏆 **Xem xếp hạng**: Xem vị trí của bạn trong Top players
+## 🎮 How to Play
 
----
+- Use arrow keys (←→↑↓) to move the snake
+- Collect red apples to grow and increase your score
+- Avoid hitting walls or yourself
+- Press Space to pause/resume
+- Press Enter or "Play again" to restart
 
-## 🏆 **Hệ thống Leaderboard**
-
-### **Tính năng nổi bật:**
-- 🥇 **Top 10 Players** được hiển thị
-- 📊 **Thứ hạng cá nhân** của bạn
-- ⚡ **Cập nhật realtime** khi có điểm mới
-- 🌍 **Toàn cầu** - Chơi cùng người chơi khắp thế giới
-- 📱 **Xem leaderboard**: Nhấn nút "🏆 Leaderboard" bất cứ lúc nào
-
-### **Cách tính điểm:**
-- 🍎 Mỗi mồi ăn được: **+1 điểm**
-- ⚡ Tốc độ tăng dần theo điểm số
-- 🏃‍♂️ Càng chơi lâu càng khó!
-
----
-
-## � **Cấu trúc dự án**
+## 🏗️ Project Structure
 
 ```
 Snake_Game/
-├── 📄 index.html              # Trang chính
-├── 🎮 snake.js               # Logic game chính  
-├── 🎨 style.css              # Giao diện và theme
-├── 🔥 firebase-config.js      # Kết nối database
-├── 📊 leaderboard-api.js      # API xếp hạng
-├── 🖼️ ui-modals.js           # Giao diện popup
-├── 📋 test-data.js           # Dữ liệu test
-├── 📖 README.md              # Hướng dẫn này
-├── ⚙️ SETUP.md               # Hướng dẫn setup (cho dev)
-└── 📁 assets/
-    └── 🔊 sounds/
-        ├── Win.wav           # Âm thanh ăn mồi
-        └── Lose.wav          # Âm thanh thua
+├── index.html              # Main game page
+├── snake.js                # Game logic
+├── style.css               # Styles and themes
+├── ui-modals.js           # UI components for modals
+├── leaderboard-api.js     # Firebase leaderboard API
+├── firebase-config.js     # Firebase initialization
+├── env.js                 # Production environment variables
+├── dev-env-loader.js      # Development environment loader
+├── setup-local.html       # Quick local setup tool
+├── test-firebase-config.html # Firebase config testing tool
+├── .env                   # Local environment variables (gitignored)
+├── env.example            # Environment variables template
+└── assets/
+    └── sounds/            # Game sound effects
 ```
 
----
+## 🔧 Configuration
 
-## 🛠️ **Công nghệ sử dụng**
+### Environment Variables
 
-### **Frontend:**
-- **HTML5 Canvas** - Rendering game graphics mượt mà
-- **Modern JavaScript** - ES Modules, async/await
-- **CSS3** - Animations, gradients, responsive design
-- **Google Fonts** - Typography đẹp mắt
+| Variable | Description |
+|----------|-------------|
+| `VITE_FIREBASE_API_KEY` | Firebase API key |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase auth domain |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase project ID |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender ID |
+| `VITE_FIREBASE_APP_ID` | Firebase app ID |
 
-### **Backend & Database:**
-- **Firebase Firestore** - NoSQL database realtime
-- **GitHub Pages** - Hosting miễn phí và nhanh
-- **Progressive Web App** - Trải nghiệm như app native
+### Local Development URLs
 
----
+- **Main Game:** `http://localhost:8000`
+- **Quick Setup:** `http://localhost:8000/setup-local.html` 
+- **Config Test:** `http://localhost:8000/test-firebase-config.html`
 
-## 🎨 **Screenshots**
+## 🐛 Troubleshooting
 
-### **Desktop View:**
-- 🖥️ Giao diện rộng rãi, rõ nét
-- 🎮 Điều khiển mượt mà
-- 🏆 Leaderboard dễ xem
+### Local Development Issues
 
-### **Mobile View:**
-- 📱 Tối ưu cho điện thoại
-- 👆 Touch-friendly controls
-- 📏 Responsive design
+1. **Environment variables not loading**
+   - Use the quick setup tool: `http://localhost:8000/setup-local.html`
+   - Or manually run `loadEnvFromFile()` in browser console
+   - Use `test-firebase-config.html` to debug
 
----
+2. **Firebase connection failed**
+   - Verify Firebase config values
+   - Check browser console for error messages
+   - Ensure Firestore is enabled in Firebase Console
 
-## � **Dành cho Developers**
+3. **CORS errors**
+   - Use a proper HTTP server (not file:// protocol)
+   - Try different local server options
 
-Muốn chạy project local hoặc đóng góp? Xem hướng dẫn chi tiết trong **[SETUP.md](./SETUP.md)**
+### Production Issues
 
-**Quick start:**
-```bash
-# Clone repo
-git clone https://github.com/leminh108/Snake_Game.git
+1. **Environment variables not replaced**
+   - Check GitHub Secrets are correctly named
+   - Verify GitHub Actions workflow is running
 
-# Chạy local server
-python -m http.server 8000
+2. **Leaderboard not working**
+   - Verify Firestore security rules
+   - Check browser console for Firebase errors
 
-# Mở http://localhost:8000
-```
+## 🤝 Contributing
 
----
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test locally
+5. Submit a pull request
 
-## 📞 **Liên hệ & Đóng góp**
+## 📄 License
 
-- 🐛 **Báo lỗi**: [GitHub Issues](https://github.com/leminh108/Snake_Game/issues)
-- � **Đề xuất tính năng**: [GitHub Discussions](https://github.com/leminh108/Snake_Game/discussions)
-- 🤝 **Đóng góp**: Fork repo và tạo Pull Request
-
----
-
-## 🎯 **Thử thách bản thân!**
-
-### **Mục tiêu cho người chơi:**
-- 🥉 **Newbie**: Đạt 10 điểm
-- 🥈 **Skilled**: Đạt 25 điểm  
-- 🥇 **Expert**: Đạt 50 điểm
-- 🏆 **Master**: Lên Top 10 leaderboard
-- 👑 **Legend**: Đạt vị trí #1
-
----
-
-<div align="center">
-
-## 🎮 **[BẮT ĐẦU CHƠI NGAY!](https://leminh108.github.io/Snake_Game/)** 🎮
-
-⭐ *Đừng quên star repo nếu bạn thích game!* ⭐
-
----
-
-💻 **Phát triển bởi Team 2** | 🐍 **Snake Game 2025** | ❤️ **Made with love**
-
-</div>
+This project is open source and available under the [MIT License](LICENSE).

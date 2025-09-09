@@ -44,8 +44,12 @@
             preload="auto"
         ></audio>
         
-        <!-- Load environment variables before any other scripts -->
-        <script src="env.js"></script>
+        <!-- Load environment variables for production -->
+        <script src="./env.js"></script>
+        
+        <!-- Development environment loader (enabled for local development) -->
+        <script src="./dev-env-loader.js"></script>
+        
         <!-- Firebase v10 SDK -->
         <script type="module" src="snake.js"></script>
     </body>
