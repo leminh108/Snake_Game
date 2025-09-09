@@ -187,7 +187,7 @@ function drawPausedOverlay() {
     ctx.fillText("Press SPACE to resume", canvas.clientWidth / 2, canvas.clientHeight / 2 + size);
 }
 
-function isGameOver() {
+function isGameOver() { 
     if (xVelocity === 0 && yVelocity === 0) return false;
     if (headX < 0 || headY < 0 || headX >= tileCount || headY >= tileCount)
         return true;
