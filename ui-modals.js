@@ -1,5 +1,6 @@
 // ui-modals.js - UI components cho pre-start, save popup và leaderboard
 import { saveScore, getTopScores, getRank, escapeHtml } from './leaderboard-api.js';
+import { hasFirebase } from './firebase-config.js';
 
 /**
  * Hiển thị modal pre-start để nhập username
@@ -102,6 +103,8 @@ export function showPreStartModal() {
  * @param {number} score - Điểm số vừa đạt được
  */
 export function showGameOverModal(score) {
+  const isFirebaseAvailable = !!db;
+  
   const modal = document.createElement('div');
   modal.className = 'modal-overlay';
   modal.innerHTML = `
@@ -110,13 +113,19 @@ export function showGameOverModal(score) {
       <div class="score-display">
         <div class="final-score">Your Score: <strong>${score}</strong></div>
       </div>
-      <p>Do you want to save your score to the leaderboard?</p>
+      ${isFirebaseAvailable 
+        ? '<p>Do you want to save your score to the leaderboard?</p>' 
+        : '<p class="offline-message">⚠️ Playing in offline mode - scores cannot be saved</p>'
+      }
       <div class="modal-buttons">
-        <button id="save-score-btn" class="btn primary">
-          💾 Save Score
-        </button>
+        ${isFirebaseAvailable 
+          ? `<button id="save-score-btn" class="btn primary">
+               💾 Save Score
+             </button>`
+          : ''
+        }
         <button id="skip-save-btn" class="btn secondary">
-          ⏭️ Skip
+          ${isFirebaseAvailable ? '⏭️ Skip' : '🎮 Play Again'}
         </button>
       </div>
     </div>
@@ -128,11 +137,19 @@ export function showGameOverModal(score) {
   const skipBtn = modal.querySelector('#skip-save-btn');
   
   // Event listeners
-  saveBtn.addEventListener('click', () => handleSaveScore(modal, score));
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => handleSaveScore(modal, score));
+  }
   skipBtn.addEventListener('click', () => handleSkipSave(modal));
   
-  // Focus vào nút Save mặc định
-  setTimeout(() => saveBtn.focus(), 100);
+  // Focus vào nút phù hợp
+  setTimeout(() => {
+    if (saveBtn) {
+      saveBtn.focus();
+    } else {
+      skipBtn.focus();
+    }
+  }, 100);
 }
 
 /**
@@ -605,6 +622,19 @@ const modalStyles = `
   text-align: center;
 }
 
+.offline-message {
+  background: #f39c12;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 12px 0;
+  text-align: center;
+}
+
+.offline-message p {
+  margin: 8px 0;
+}
+
 .loading-message {
   text-align: center;
   color: var(--muted);
@@ -631,6 +661,36 @@ const modalStyles = `
  * Hiển thị leaderboard tổng thể (không cần điểm số hiện tại)
  */
 export async function showLeaderboardOnly() {
+  // Kiểm tra Firebase availability
+  if (!hasFirebase) {
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-content leaderboard-modal">
+        <h2>🏆 Leaderboard</h2>
+        <div class="offline-message">
+          <p>⚠️ Leaderboard not available</p>
+          <p>Playing in offline mode</p>
+        </div>
+        <div class="modal-buttons">
+          <button id="close-leaderboard-btn" class="btn primary">
+            ✅ Close
+          </button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    const closeBtn = modal.querySelector('#close-leaderboard-btn');
+    closeBtn.addEventListener('click', () => {
+      modal.remove();
+    });
+    
+    setTimeout(() => closeBtn.focus(), 100);
+    return;
+  }
+  
   // Tạo modal loading trước
   const modal = document.createElement('div');
   modal.className = 'modal-overlay';

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Config Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .warning {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+        .error {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .config-item {
+            background: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .masked {
+            font-family: monospace;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Firebase Configuration Test</h1>
+    
+    <div id="status-container"></div>
+    
+    <h2>🛠️ Development Tools</h2>
+    <button onclick="loadEnvFromFile()">📁 Load from .env file</button>
+    <button onclick="clearFirebaseConfig()">🧹 Clear localStorage</button>
+    <button onclick="testFirebase()">🧪 Test Firebase Connection</button>
+    <button onclick="location.reload()">🔄 Reload Page</button>
+    
+    <h2>📋 Current Configuration</h2>
+    <div id="config-container"></div>
+    
+    <h2>📝 Instructions</h2>
+    <div class="info status">
+        <strong>For Local Development:</strong><br>
+        1. Copy <code>env.example</code> to <code>.env</code><br>
+        2. Fill in your Firebase values in <code>.env</code><br>
+        3. Uncomment the dev-env-loader script in <code>index.html</code><br>
+        4. Click "Load from .env file" above<br>
+        5. Reload the page
+    </div>
+    
+    <div class="info status">
+        <strong>For Production (GitHub Pages):</strong><br>
+        Environment variables are automatically loaded from GitHub Secrets<br>
+        via the <code>env.js</code> file replaced during deployment.
+    </div>
+
+    <!-- Load environment variables -->
+    <script src="./env.js"></script>
+    
+    <!-- Development environment loader -->
+    <script src="./dev-env-loader.js"></script>
+    
+    <script type="module">
+        import { hasFirebase, db } from './firebase-config.js';
+        
+        const statusContainer = document.getElementById('status-container');
+        const configContainer = document.getElementById('config-container');
+        
+        function addStatus(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = message;
+            statusContainer.appendChild(div);
+        }
+        
+        function showConfig() {
+            const firebaseKeys = [
+                'VITE_FIREBASE_API_KEY',
+                'VITE_FIREBASE_AUTH_DOMAIN', 
+                'VITE_FIREBASE_PROJECT_ID',
+                'VITE_FIREBASE_STORAGE_BUCKET',
+                'VITE_FIREBASE_MESSAGING_SENDER_ID',
+                'VITE_FIREBASE_APP_ID'
+            ];
+            
+            configContainer.innerHTML = '';
+            
+            firebaseKeys.forEach(key => {
+                const div = document.createElement('div');
+                div.className = 'config-item';
+                
+                // Check window.ENV first, then localStorage
+                let value = null;
+                let source = '';
+                
+                if (window.ENV && window.ENV[key] && !window.ENV[key].includes('{{')) {
+                    value = window.ENV[key];
+                    source = 'window.ENV (production)';
+                } else if (localStorage.getItem(key)) {
+                    value = localStorage.getItem(key);
+                    source = 'localStorage (development)';
+                }
+                
+                if (value) {
+                    const masked = value.length > 10 ? value.substring(0, 10) + '...' : value;
+                    div.innerHTML = `
+                        <strong>${key}:</strong><br>
+                        <span class="masked">${masked}</span><br>
+                        <small>Source: ${source}</small>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <strong>${key}:</strong><br>
+                        <span style="color: #dc3545;">Not configured</span>
+                    `;
+                }
+                
+                configContainer.appendChild(div);
+            });
+        }
+        
+        // Test Firebase connection
+        window.testFirebase = async function() {
+            try {
+                if (hasFirebase && db) {
+                    addStatus('✅ Firebase connection successful!', 'success');
+                    
+                    // Try to access Firestore
+                    const { collection, getDocs } = await import('https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js');
+                    const querySnapshot = await getDocs(collection(db, 'scores'));
+                    addStatus(`📊 Firestore accessible - found ${querySnapshot.size} score records`, 'success');
+                } else {
+                    addStatus('❌ Firebase not initialized - check configuration', 'error');
+                }
+            } catch (error) {
+                addStatus(`❌ Firebase test failed: ${error.message}`, 'error');
+                console.error('Firebase test error:', error);
+            }
+        };
+        
+        // Initial status check
+        if (hasFirebase) {
+            addStatus('✅ Firebase initialized successfully', 'success');
+        } else {
+            addStatus('⚠️ Firebase not initialized - running in offline mode', 'warning');
+        }
+        
+        // Show current config
+        showConfig();
+        
+        // Log environment status
+        console.log('🔍 Environment Status:', {
+            hasFirebase,
+            windowEnvAvailable: !!window.ENV,
+            localStorageKeys: Object.keys(localStorage).filter(k => k.startsWith('VITE_FIREBASE_'))
+        });
+    </script>
+</body>
+</html>

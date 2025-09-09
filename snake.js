@@ -1,7 +1,5 @@
 // ===== Import highscore modules =====
 import { showPreStartModal, showGameOverModal, showLeaderboardOnly } from './ui-modals.js';
-// Import test data helper (chỉ dùng cho development)
-import './test-data.js';
 
 const btn = document.getElementById("themeToggle");
 if (localStorage.getItem("theme") === "light") {

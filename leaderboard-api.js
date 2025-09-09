@@ -1,5 +1,5 @@
 // leaderboard-api.js - API cho quản lý highscore với Firestore
-import { db } from './firebase-config.js';
+import { db, hasFirebase } from './firebase-config.js';
 import { 
   collection, 
   addDoc, 
@@ -17,6 +17,14 @@ import {
 const SCORES_COLLECTION = 'scores';
 
 /**
+ * Kiểm tra xem Firebase có available không
+ * @returns {boolean}
+ */
+function isFirebaseAvailable() {
+  return hasFirebase && db !== null;
+}
+
+/**
  * Lưu điểm số của người chơi vào Firestore
  * @param {string} username - Tên người chơi (1-20 ký tự, đã trim)
  * @param {number} score - Điểm số (>=0)
@@ -25,6 +33,15 @@ const SCORES_COLLECTION = 'scores';
 export async function saveScore(username, score) {
   try {
     console.log('🔍 [saveScore] Starting save with:', { username, score });
+    
+    // Kiểm tra Firebase connection
+    if (!isFirebaseAvailable()) {
+      console.warn('⚠️ Firebase not available - cannot save score');
+      return {
+        success: false,
+        error: 'Firebase connection not available. Game running in offline mode.'
+      };
+    }
     
     // Validate input
     if (!username || typeof username !== 'string') {
@@ -89,6 +106,12 @@ export async function saveScore(username, score) {
 export async function getTopScores(limitCount = 5) {
   try {
     console.log('🔍 [getTopScores] Starting query with limit:', limitCount);
+    
+    // Kiểm tra Firebase connection
+    if (!isFirebaseAvailable()) {
+      console.warn('⚠️ Firebase not available - returning empty leaderboard');
+      return [];
+    }
     
     // Query sắp xếp theo score giảm dần, createdAt tăng dần (người đạt sớm hơn xếp trước khi điểm bằng nhau)
     const q = query(
@@ -159,6 +182,12 @@ Cần kiểm tra rules trong Firebase Console.
  */
 export async function getRank({ score, createdAt }) {
   try {
+    // Kiểm tra Firebase connection
+    if (!isFirebaseAvailable()) {
+      console.warn('⚠️ Firebase not available - cannot calculate rank');
+      return 'N/A';
+    }
+    
     if (typeof score !== 'number' || score < 0) {
       throw new Error('Invalid score for rank calculation');
     }
