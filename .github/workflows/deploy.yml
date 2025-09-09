@@ -1,11 +1,9 @@
-# Deploy Snake Game to GitHub Pages
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,82 +12,62 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate env.js from GitHub Secrets (always overwrite)
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+        run: |
+          echo "Luôn ghi đè env.js từ GitHub Secrets..."
+          missing=()
+          [ -z "${VITE_FIREBASE_API_KEY}" ] && missing+=("VITE_FIREBASE_API_KEY")
+          [ -z "${VITE_FIREBASE_APP_ID}" ] && missing+=("VITE_FIREBASE_APP_ID")
+          [ -z "${VITE_FIREBASE_AUTH_DOMAIN}" ] && missing+=("VITE_FIREBASE_AUTH_DOMAIN")
+          [ -z "${VITE_FIREBASE_MESSAGING_SENDER_ID}" ] && missing+=("VITE_FIREBASE_MESSAGING_SENDER_ID")
+          [ -z "${VITE_FIREBASE_PROJECT_ID}" ] && missing+=("VITE_FIREBASE_PROJECT_ID")
+          [ -z "${VITE_FIREBASE_STORAGE_BUCKET}" ] && missing+=("VITE_FIREBASE_STORAGE_BUCKET")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "Thiếu GitHub Secrets 1: ${missing[*]}" && exit 1
+          fi
+          rm -f env.js
+          cat > env.js << 'EOF'
+          window.env = {
+              VITE_FIREBASE_API_KEY: "${{ secrets.VITE_FIREBASE_API_KEY }}",
+              VITE_FIREBASE_APP_ID: "${{ secrets.VITE_FIREBASE_APP_ID }}",
+              VITE_FIREBASE_AUTH_DOMAIN: "${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}",
+              VITE_FIREBASE_MESSAGING_SENDER_ID: "${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}",
+              VITE_FIREBASE_PROJECT_ID: "${{ secrets.VITE_FIREBASE_PROJECT_ID }}",
+              VITE_FIREBASE_STORAGE_BUCKET: "${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}"
+          };
+          EOF
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Replace environment variables in env.js
-        run: |
-          echo "🔧 Replacing environment variables..."
-          
-          # Replace placeholders with actual values
-          sed -i 's/{{VITE_FIREBASE_API_KEY}}/${{ secrets.VITE_FIREBASE_API_KEY }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_AUTH_DOMAIN}}/${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_PROJECT_ID}}/${{ secrets.VITE_FIREBASE_PROJECT_ID }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_STORAGE_BUCKET}}/${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_MESSAGING_SENDER_ID}}/${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_APP_ID}}/${{ secrets.VITE_FIREBASE_APP_ID }}/g' env.js
-          
-          echo "✅ Environment variables replaced"
-          echo "📋 Checking env.js content:"
-          head -10 env.js
-          
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-        
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-          
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
 
-      - name: Replace environment variables in env.js
-        run: |
-          echo "🔄 Replacing environment variables in env.js..."
-          
-          # Backup original file
-          cp env.js env.js.template
-          
-          # Replace placeholders with actual values from GitHub environment variables
-          sed -i 's/{{VITE_FIREBASE_API_KEY}}/${{ vars.VITE_FIREBASE_API_KEY }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_AUTH_DOMAIN}}/${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_PROJECT_ID}}/${{ vars.VITE_FIREBASE_PROJECT_ID }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_STORAGE_BUCKET}}/${{ vars.VITE_FIREBASE_STORAGE_BUCKET }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_MESSAGING_SENDER_ID}}/${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}/g' env.js
-          sed -i 's/{{VITE_FIREBASE_APP_ID}}/${{ vars.VITE_FIREBASE_APP_ID }}/g' env.js
-          
-          echo "✅ Environment variables replaced successfully"
-          
-          # Show first few lines for verification (without exposing sensitive data)
-          echo "📄 env.js preview:"
-          head -n 10 env.js | sed 's/[A-Za-z0-9_-]\{10,\}/***HIDDEN***/g'
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
